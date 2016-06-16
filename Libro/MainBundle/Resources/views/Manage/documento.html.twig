@@ -1,0 +1,267 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="{{path('libro_manage_area')}}">Area</a></li>
+  <li><a href="{{path('libro_manage_expediente')}}">Expediente</a></li>
+  <li><a href="#">Documentos</a></li>
+</ul>
+<nav>
+  <div class="nav-wrapper">
+    <!-- <a href="#" class="brand-logo">Inicio</a> -->
+    <a href="#" data-activates="vmobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    <ul class="left hide-on-med-and-down">
+        <li><a href="{{path('libro_manage')}}"><i class="material-icons left">home</i></a></li>
+        <li><a class="dropdown-button" href="#" data-activates="dropdown1">Gestión<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a href="#"><i class="material-icons left">timeline</i>Reportes</a></li>
+    </ul>
+    <ul class="right hide-on-med-and-down">
+      <li>{{nombre}}</li>
+      <li><a href="{{path('libro_main_logout')}}"><i class="material-icons">power_settings_new</i></a></li>
+    </ul>
+    <!-- //estructuras responsive y dropdown -->
+      <ul id="vmobile" class="side-nav">
+        <li><a href="{{path('libro_manage')}}"><i class="material-icons">home</i></a></li>
+        <li style="color: black"><a href="#" ><strong>{{nombre}}</strong></a></li>
+        <li class="divider"></li>
+        <li><a href="#"><strong>Gestión</strong></a></li>
+        <li><a href="{{path('libro_manage_area')}}">Area</a></li>
+        <li><a href="{{path('libro_manage_expediente')}}">Expediente</a></li>
+        <li><a href="#">Oficina</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Reportes</a></li>
+        <li><a href="#">Cerrar Sesión</a></li>
+      </ul>
+  </div>
+</nav>
+<section class="section-ajustar">
+  <table class="bordered responsive-table striped">
+    <thead>
+      <tr>
+        <th>Codigo</th>
+        <th>Tipo de Documento</th>
+        <th>Remitente</th>
+        <th>Destinatario</th>
+        <th>Asunto</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>N° de Expediente</th>
+        <th>Area Remitente</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    {% for documento in documentos %}
+    <tr>
+      <td>{{documento.id}}</td>
+      <td>{{documento.tipoDoc}}</td>
+      <td>{{documento.de}}</td>
+      <td>{{documento.para}}</td>
+      <td>{{documento.asunto}}</td>
+      <td>{{documento.descripcion}}</td>
+      <td>{{documento.fecha|date("d/m/Y")}}</td>
+      {% if documento.expediente %}
+      <td>{{documento.expediente.id}}</td>
+      {% endif %}
+      {% if documento.area %}
+      <td>{{documento.area.nombre}}</td>
+      {% endif %}
+      <td colspan="2"><a class="modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Modificar" href="#{{documento.id}}"><i class="material-icons">edit</i></a><a class="modal-trigger tooltipped" data-position="right" data-delay="50" data-tooltip="Eliminar" href="#p{{documento.id}}"><i class="material-icons">delete</i></a></td>
+    </tr>
+    <!-- eliminar documento -->
+    <div id="p{{documento.id}}" class="modal">
+      <div class="modal-content">
+        <h4>Desea eliminar este elemento?</h4>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="text" name="idDocumento" id="ID" readonly value="{{documento.id}}">
+            <label for="ID"><strong>código</strong></label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn red waves-effect waves-light modal-action modal-close">cerrar
+         <i class="material-icons left">close</i>
+       </a>
+        <a class="btn waves-effect waves-light" href="{{path('libro_manage_documento_delete', {'id' : documento.id}) }}">eliminar
+         <i class="material-icons left">delete</i>
+       </a>
+      </div>
+    </div>
+    <!-- modificar documento -->
+    <div class="">
+      <form class="form" action="{{path('libro_manage_documento_update')}}" method="post" id="s{{documento.id}}" >
+        <div id="{{documento.id}}" class="modal">
+          <div class="modal-content">
+            <h4>Modificar Expediente</h4>
+            <div class="row">
+              <div class="input-field col s12">
+                <input type="text" readonly required name="idDocumento" id="ID"  value="{{documento.id}}">
+                <label for="ID"><strong>Código</strong></label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input type="date" required name="fecha" class="datepicker" value="{{documento.fecha|date("m/d/Y")}}" placeholder="Fecha" >
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input type="text" required name="tipoDoc" id="tipoDoc"  value="{{documento.tipoDoc}}">
+                <label for="tipoDoc"><strong>Tipo de Documento</strong></label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input type="text" required name="remitente" id="remitente"  value="{{documento.de}}">
+                <label for="remitente"><strong>Remitente</strong></label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input type="text" required name="destinatario" id="destinatario"  value="{{documento.para}}">
+                <label for="destinatario"><strong>Destinatario</strong></label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <input type="text" required name="asunto" id="asunto"  value="{{documento.asunto}}">
+                <label for="asunto"><strong>Asunto</strong></label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <textarea name="descripcion" id="descripcion" class="materialize-textarea"  rows="8" cols="40">{{documento.descripcion}}</textarea>
+                <label for="descripcion"><strong>Descripción</strong></label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s12">
+                <select name="expediente" form="s{{documento.id}}" >
+                  <!-- <option value="" disabled selected>Número de Expediente</option> -->
+                  {% for expediente in expedientes %}
+                  {% if documento.expediente %}
+                  {% if expediente.id == documento.expediente.id %}
+                  <option value="{{expediente.id}}" selected>{{expediente.id}}</option>
+                  {% else %}
+                  <option value="{{expediente.id}}">{{expediente.id}}</option>
+                  {% endif %}
+                  {% endif %}
+                  {% endfor %}
+                </select>
+                <label>Expediente al que pertenece</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <select name="area" form="s{{documento.id}}">
+                  {% for area in areas %}
+                  {% if documento.area %}
+                  {% if area.id == documento.area.id %}
+                  <option value="{{area.id}}" selected>{{area.nombre}}</option>
+                  {% else %}
+                  <option value="{{area.id}}">{{area.nombre}}</option>
+                  {% endif %}
+                  {% endif %}
+                  {% endfor %}
+                </select>
+                <label>Area al que pertenece</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a class="btn red waves-effect waves-light modal-action modal-close">cerrar
+             <i class="material-icons left">close</i>
+           </a>
+            <button class="btn waves-effect waves-light" type="submit" name="submit">Modificar
+             <i class="material-icons left">edit</i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    {% endfor %}
+  </table>
+  <a href="#insertModal" class="btn-floating btn-large waves-effect waves-light red flotante modal-trigger"><i class="material-icons">add</i></a>
+ <!-- añadir documento -->
+  <div class="">
+    <form class="form" action="{{path('libro_manage_documento_insert')}}" method="post" id="insert" enctype="multipart/form-data">
+      <div id="insertModal" class="modal">
+        <div class="modal-content">
+          <h4>Insertar Expediente</h4>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" required name="idDocumento" id="ID"  value="">
+              <label for="ID"><strong>Código</strong></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="date" required name="fecha" class="datepicker" placeholder="Fecha" >
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" required name="tipoDoc" id="tipoDoc"  value="">
+              <label for="tipoDoc"><strong>Tipo de Documento</strong></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" required name="remitente" id="remitente"  value="">
+              <label for="remitente"><strong>Remitente</strong></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" required name="destinatario" id="destinatario"  value="">
+              <label for="destinatario"><strong>Destinatario</strong></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input type="text" required name="asunto" id="asunto"  value="">
+              <label for="asunto"><strong>Asunto</strong></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea name="descripcion" id="descripcion" class="materialize-textarea"  rows="8" cols="40"></textarea>
+              <label for="descripcion"><strong>Descripción</strong></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <select name="expediente" form="insert">
+                <option value="" disabled selected>Número de Expediente</option>
+                {% for expediente in expedientes %}
+                <option value="{{expediente.id}}">{{expediente.id}}</option>
+                {% endfor %}
+              </select>
+              <label>Expediente al que pertenece</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <select name="area" form="insert">
+                <option value="" disabled selected>Elegir el Area</option>
+                {% for area in areas %}
+                <option value="{{area.id}}">{{area.nombre}}</option>
+                {% endfor %}
+              </select>
+              <label>Area al que pertenece</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn red waves-effect waves-light modal-action modal-close">cerrar
+           <i class="material-icons left">close</i>
+         </a>
+          <button class="btn waves-effect waves-light" type="submit" name="submit">Insertar
+           <i class="material-icons left">add</i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

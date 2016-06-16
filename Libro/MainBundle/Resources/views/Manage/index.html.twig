@@ -1,0 +1,66 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="{{path('libro_manage_area')}}">Area</a></li>
+  <li><a href="{{path('libro_manage_expediente')}}">Expediente</a></li>
+  <li><a href="{{path('libro_manage_documento')}}">Documento</a></li>
+</ul>
+<nav>
+  <div class="nav-wrapper">
+    <!-- <a href="#" class="brand-logo">Inicio</a> -->
+    <a href="#" data-activates="vmobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    <ul class="left hide-on-med-and-down">
+        <li><a href="{{path('libro_manage')}}"><i class="material-icons left">home</i></a></li>
+        <li><a class="dropdown-button" href="#" data-activates="dropdown1">Gestión<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a href="{{path('libro_report')}}"><i class="material-icons left">timeline</i>Reportes</a></li>
+    </ul>
+    <ul class="right hide-on-med-and-down">
+      <li>{{nombre}}</li>
+      <li><a href="{{path('libro_main_logout')}}"><i class="material-icons">power_settings_new</i></a></li>
+    </ul>
+    <!-- //estructuras responsive y dropdown -->
+      <ul id="vmobile" class="side-nav">
+        <li><a href="{{path('libro_manage')}}"><i class="material-icons">home</i></a></li>
+        <li style="color: black"><a href="#" ><strong>{{nombre}}</strong></a></li>
+        <li class="divider"></li>
+        <li><a href="#"><strong>Gestión</strong></a></li>
+        <li><a href="{{path('libro_manage_area')}}">Area</a></li>
+        <li><a href="{{path('libro_manage_expediente')}}">Expediente</a></li>
+        <li><a href="{{path('libro_manage_documento')}}">Dcoumento</a></li>
+        <li class="divider"></li>
+        <li><a href="{{path('libro_report')}}">Reportes</a></li>
+        <li><a href="{{path('libro_main_logout')}}">Cerrar Sesión</a></li>
+      </ul>
+  </div>
+</nav>
+<section class="section-ajustar">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+        <th>Asunto</th>
+        <th># de Expediente</th>
+        <th>Realizado por:</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for libro in libros %}
+      <tr>
+        <td>{{libro.id}}</td>
+        <td>{{libro.estado}}</td>
+        <td>{{libro.fecha|date("d/m/Y")}}</td>
+        <td>{{libro.asunto}}</td>
+        {% if libro.expediente %}
+        <td>{{libro.expediente.id}}</td>
+        {% endif %}
+        {% if libro.usuario %}
+        <td>{{libro.usuario.nombre}}</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="{{path('libro_manage_area')}}">Area</a></li>
+  <li><a href="{{path('libro_manage_expediente')}}">Expediente</a></li>
+  <li><a href="{{path('libro_manage_documento')}}">Documento</a></li>
+</ul>
+<nav>
+  <div class="nav-wrapper">
+    <!-- <a href="#" class="brand-logo">Inicio</a> -->
+    <a href="#" data-activates="vmobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    <ul class="left hide-on-med-and-down">
+        <li><a href="{{path('libro_manage')}}"><i class="material-icons left">home</i></a></li>
+        <li><a class="dropdown-button" href="#" data-activates="dropdown1">Gestión<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a href="#"><i class="material-icons left">timeline</i>Reportes</a></li>
+    </ul>
+    <ul class="right hide-on-med-and-down">
+      <li>{{nombre}}</li>
+      <li><a href="{{path('libro_main_logout')}}"><i class="material-icons">power_settings_new</i></a></li>
+    </ul>
+    <!-- //estructuras responsive y dropdown -->
+      <ul id="vmobile" class="side-nav">
+        <li><a href="{{path('libro_manage')}}"><i class="material-icons">home</i></a></li>
+        <li style="color: black"><a href="#" ><strong>{{nombre}}</strong></a></li>
+        <li class="divider"></li>
+        <li><a href="#"><strong>Gestión</strong></a></li>
+        <li><a href="{{path('libro_manage_area')}}">Area</a></li>
+        <li><a href="{{path('libro_manage_expediente')}}">Expediente</a></li>
+        <li><a href="{{path('libro_manage_documento')}}">Documento</a></li>
+        <li class="divider"></li>
+        <li><a href="#">Reportes</a></li>
+        <li><a href="#">Cerrar Sesión</a></li>
+      </ul>
+  </div>
+</nav>
+<section class="section-ajustar">
+  <table class="bordered striped">
+    <thead>
+      <tr>
+        <th>Codigo</th>
+        <th>Fecha</th>
+        <th>Tipo</th>
+        <th>Asunto</th>
+        <th>Contenido</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    {% for expedientes in expediente %}
+
+<!-- Actualizando -->
+
+  <form class="form" action="{{path('libro_manage_expediente_update')}}" method="post" enctype="multipart/form-data">
+    <div id="{{expedientes.id}}" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <h4>Modificar Area</h4>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="text" name="idExpediente" id="ID" readonly value="{{expedientes.id}}">
+            <label for="ID"><strong></strong></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="date" name="fecha" class="datepicker" value="{{expedientes.fecha|date("m/d/Y")}}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="text" name="tipo" id="ENCARGADO" value="{{expedientes.tipo}}">
+            <label for="ENCARGADO"><strong>Tipo</strong></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="text" name="asunto" id="TELEFONO" value="{{expedientes.asunto}}">
+            <label for="TELEFONO"><strong>Asunto</strong></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="file-field input-field col s12">
+            <div class="btn">
+              <span>Contenido</span>
+              <input type="file" name="contenido" value="{{expedientes.contenido}}">
+            </div>
+            <div class="file-path-wrapper">
+              <input type="text" class="file-path validate" >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn red waves-effect waves-light modal-action modal-close">cerrar
+         <i class="material-icons left">close</i>
+       </a>
+        <button class="btn waves-effect waves-light" type="submit" name="submit">modificar
+         <i class="material-icons left">edit</i>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div id="p{{expedientes.id}}" class="modal">
+    <div class="modal-content">
+      <h4>Desea eliminar este elemento?</h4>
+      <div class="row">
+        <div class="input-field col s12">
+          <input type="text" name="idExpediente" id="ID" readonly value="{{expedientes.id}}">
+          <label for="ID"><strong></strong></label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="btn red waves-effect waves-light modal-action modal-close">cerrar
+       <i class="material-icons left">close</i>
+     </a>
+      <a class="btn waves-effect waves-light" href="{{path('libro_manage_expediente_delete', {'id' : expedientes.id}) }}">eliminar
+       <i class="material-icons left">delete</i>
+     </a>
+    </div>
+  </div>
+    <tr>
+      <td>{{expedientes.id}}</td>
+      <td>{{expedientes.fecha|date("d/m/Y")}}</td>
+      <td>{{expedientes.tipo}}</td>
+      <td>{{expedientes.asunto}}</td>
+      {% if expedientes.contenido == null %}
+      <td><a onclick="return false" class="tooltipped" data-position="left" data-delay="50" data-tooltip="No existe PDF" href="{{path('libro_manage_expediente_download', {'id':expedientes.id})}}"><i class="material-icons gray600">picture_as_pdf</i></a></td>
+      {% else %}
+      <td><a  href="{{path('libro_manage_expediente_download', {'id':expedientes.id})}}"><i class="material-icons">picture_as_pdf</i></a></td>
+      {% endif %}
+      <td colspan="2"><a class="modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Modificar" href="#{{expedientes.id}}"><i class="material-icons">edit</i></a><a class="modal-trigger tooltipped" data-position="right" data-delay="50" data-tooltip="Eliminar" href="#p{{expedientes.id}}"><i class="material-icons">delete</i></a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  <a href="#insertModal" class="btn-floating btn-large waves-effect waves-light red flotante modal-trigger"><i class="material-icons">add</i></a>
+  <!-- añadir -->
+  <form class="form" action="{{path('libro_manage_expediente_insert')}}" method="post" enctype="multipart/form-data">
+    <div id="insertModal" class="modal">
+      <div class="modal-content">
+        <h4>Insertar Expediente</h4>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="number" required name="idExpediente" id="ID"  value="" maxlength="11">
+            <label for="ID"><strong>Código</strong></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="date" required name="fecha" class="datepicker" placeholder="Fecha" >
+            <!-- <label for="fecha"><strong>Fecha</strong></label> -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="text" required name="tipo" id="ENCARGADO">
+            <label for="ENCARGADO"><strong>Tipo</strong></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="text" required name="asunto" id="TELEFONO">
+            <label for="TELEFONO"><strong>Asunto</strong></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="file-field input-field col s12">
+            <div class="btn">
+              <span>Contenido</span>
+              <input type="file" name="contenido" >
+            </div>
+            <div class="file-path-wrapper">
+              <input type="text" class="file-path validate" >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn red waves-effect waves-light modal-action modal-close">cerrar
+         <i class="material-icons left">close</i>
+       </a>
+        <button class="btn waves-effect waves-light" type="submit" name="submit">Insertar
+         <i class="material-icons left">add</i>
+        </button>
+      </div>
+    </div>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,64 @@
+libro_main_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: LibroMainBundle:Default:index }
+
+libro_main:
+  path: /
+  defaults: {_controller: LibroMainBundle:Login:index}
+libro_main_login:
+    path:     /login/
+    defaults: { _controller: LibroMainBundle:Login:login }
+libro_main_logout:
+    path: /logout
+    defaults: { _controller: LibroMainBundle:Login:logout}
+libro_manage:
+  path: /manage
+  defaults: { _controller: LibroMainBundle:Manage:index}
+libro_manage_area:
+  path: /manage/area
+  defaults: { _controller: LibroMainBundle:Area:index}
+libro_manage_area_delete:
+  path: /manage/area/delete/{id}
+  defaults: { _controller: LibroMainBundle:Area:delete}
+libro_manage_area_update:
+  path: /manage/area/update
+  defaults: { _controller: LibroMainBundle:Area:update}
+libro_manage_area_insert:
+  path: /manage/area/insert
+  defaults: { _controller: LibroMainBundle:Area:insert}
+libro_manage_expediente:
+  path: /manage/expediente
+  defaults: { _controller: LibroMainBundle:Expediente:index}
+libro_manage_expediente_delete:
+  path: /manage/expediente/delete/{id}
+  defaults: { _controller: LibroMainBundle:Expediente:delete}
+libro_manage_expediente_update:
+  path: /manage/expediente/update
+  defaults: { _controller: LibroMainBundle:Expediente:update}
+libro_manage_expediente_insert:
+  path: /manage/expediente/insert
+  defaults: { _controller: LibroMainBundle:Expediente:insert}
+libro_manage_expediente_download:
+  path: /manage/expediente/download/{id}
+  defaults: { _controller: LibroMainBundle:Expediente:download}
+libro_manage_documento:
+  path: /manage/documento
+  defaults: { _controller: LibroMainBundle:Documento:index}
+libro_manage_documento_delete:
+  path: /manage/documento/delete/{id}
+  defaults: { _controller: LibroMainBundle:Documento:delete}
+libro_manage_documento_update:
+  path: /manage/documento/update
+  defaults: { _controller: LibroMainBundle:Documento:update}
+libro_manage_documento_insert:
+  path: /manage/documento/insert
+  defaults: { _controller: LibroMainBundle:Documento:insert}
+prueba_manage_documento:
+  path: /manage/prueba
+  defaults: { _controller: LibroMainBundle:Prueba:index}
+prueba_manage_documento_recojo:
+  path: /manage/prueba/recojo
+  defaults: { _controller: LibroMainBundle:Prueba:prueba}
+libro_report:
+  path: /report
+  defaults: { _controller: LibroMainBundle:Report:index}

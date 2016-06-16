@@ -1,0 +1,25 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+<div id="isne" class="modal">
+<div class="modal-content">
+  <form class="" action="{{ path('prueba_manage_documento_recojo')}}" method="post">
+    <div class="row">
+      <div class="input-field col s12">
+    <select name="xp">
+      <option value="option">option</option>
+      <option value="option2">option2</option>
+      <option value="option3">option3</option>
+      <option value="option4">option4</option>
+    </select>
+    <label for="">zsdfzdff</label>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="submit" name="button">enviar</button>
+</div>
+  </div>
+  </form>
+      <!-- <input type="submit" name="name" value="xd"> -->
+      <a class="modal-trigger" href="#isne">enviar</a>
+{% endblock %}

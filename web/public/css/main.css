@@ -1,0 +1,32 @@
+.container-edit {
+  /*margin: 0px auto;*/
+  margin-top: 5%;
+  margin-left: 35%;
+  max-width: 800px;
+  width: 90%;
+}
+
+@media only screen and (max-width: 601px) {
+  .container-edit {
+    margin: 5px auto;
+    width: 85%;
+  }
+}
+
+.flotante{
+  display: scroll;
+  position: fixed;
+  bottom: 50px;
+  right: 10px;
+}
+.section-ajustar{
+  margin-left: 20px;
+  margin-right: 40px;
+}
+/*@media only screen and (min-width: 993px) {
+  .container-edit {
+    margin-top: 5%;
+    margin-left: 35%;
+    width: 90%;
+  }
+}*/
